@@ -36,3 +36,21 @@
 - Immutable
 - 計算等の機能は持たせない
 - Record で実装する
+
+# RecipeBook
+
+## Responsibility 
+計算に使用するレシピ選択を保持する
+
+## Fields
+ - book:Map<String,Recipe> 
+ 
+## Methods 
+ - getRecipe(String) return Recipe 
+ 　　アイテムを生産するためのレシピを返す 
+
+## Notes 
+ - Class で実装する 
+ - 計算はしない
+ - 対応関係のみを保持する
+ ‐ Ver0.1 では変更不可(Immutable)
