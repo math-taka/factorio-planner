@@ -54,3 +54,35 @@
  - 計算はしない
  - 対応関係のみを保持する
  ‐ Ver0.1 では変更不可(Immutable)
+
+# RecipeCalculator
+
+## Responsibility
+
+ RecipeBookに登録されたレシピに従って目的のアイテムを生成するための材料を計算する
+
+## Fields
+
+## Methods
+
+ - calculateIngredients(ItemStack target,RecipeBook recipeBook) return List<ItemStack>
+    ItemStack で指定されたアイテムと数量分を RecipeBook のレシピ通りに生産するために必要な素材を計算する。
+    戻り値のリストには同じアイテム名の ItemStack が重複しないようにする。
+
+## Algorithm
+目的のアイテムとその個数を受け取る
+↓
+レシピを取得
+　├　レシピがない→そのまま返す
+　└　レシピがある→材料を計算
+↓
+各材料について材料を計算しリストに加える
+↓
+重複した材料を合算
+
+## Notes
+ - class で実装
+ - 計算機能のみを持つ
+
+## Future
+ - 将来的には複数種類の生産物に対しての計算の実装も考える
