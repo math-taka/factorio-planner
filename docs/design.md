@@ -8,12 +8,17 @@
 - amount
 
 ## Methods
-- なし
+- sameItem(ItemStack other) return boolean
+   item が一致するかを判定する
+
+- addAmount(double value) reutrn ItemStack
+    量を加算した ItemStack を生成する
 
 ## Notes
 - recordで実装する
 - Immutable
-- 計算処理は持たせない
+- 計算処理は持たせない×
+　→量の足し算ができる
 
 # Recipe
 
