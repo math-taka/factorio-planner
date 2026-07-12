@@ -27,4 +27,8 @@ public class RecipeBook{
     public Recipe getRecipe(String item){
         return book.get(item);
     }
+
+    public boolean isContained(String item){
+        return book.containsKey(item);
+    }
 }

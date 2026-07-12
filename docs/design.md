@@ -54,6 +54,9 @@
  - getRecipe(String) return Recipe 
  　　アイテムを生産するためのレシピを返す 
 
+ - isContained(String item) return boolean
+    そのアイテムについてのレシピがあるかを判定する
+
 ## Notes 
  - Class で実装する 
  - 計算はしない
