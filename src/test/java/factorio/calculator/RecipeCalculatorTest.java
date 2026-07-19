@@ -24,6 +24,7 @@ public class RecipeCalculatorTest {
             3.2
         );
 
+
         ItemStack GearWheelForRecipe = new ItemStack("Gear Wheel",1);
         ItemStack ironPlateForGear = new ItemStack("Iron Plate",2);
 
@@ -32,6 +33,7 @@ public class RecipeCalculatorTest {
             List.of(GearWheelForRecipe),
             0.5
         );
+
 
         ItemStack transportBeltForRecipe = new ItemStack("Transport Belt",2);
         ItemStack ironPlateForBelt = new ItemStack("Iron Plate",1);
@@ -42,6 +44,7 @@ public class RecipeCalculatorTest {
             List.of(transportBeltForRecipe),
             0.5
         );
+
 
         book = new RecipeBook(List.of(ironPlateRecipe,GearWheelRecipe,transportBeltRecipe));
         calculator = new RecipeCalculator();
@@ -70,6 +73,45 @@ public class RecipeCalculatorTest {
         List<ItemStack> expected = List.of(new ItemStack("Iron Ore",6));
 
         assertEquals(expected,calculator.calculateIngredients(need, book));
+    }
+
+    @Test
+    void calculatesNoRecipeItem(){
+        ItemStack need = new ItemStack("Iron Ore",10);
+        List<ItemStack> expected = List.of(need);
+
+        assertEquals(expected,calculator.calculateIngredients(need,book));
+    }
+
+    @Test
+    void targetsIsEmpty(){
+        List<ItemStack> expected = List.of();
+        assertEquals(expected,calculator.calculateIngredients(List.of(),book));
+    }
+
+    @Test
+    void targetsHasATarget(){
+        List<ItemStack> targets = List.of(
+            new ItemStack("Iron Plate",10)
+        );
+        List<ItemStack> expected = List.of(
+            new ItemStack("Iron Ore",10)
+        );
+
+        assertEquals(expected,calculator.calculateIngredients(targets, book));
+    }
+
+    @Test
+    void targetsHasTwoTargets(){
+        List<ItemStack> targets = List.of(
+            new ItemStack("Iron Plate",10),
+            new ItemStack("Gear Wheel",5)
+        );
+        List<ItemStack> expected = List.of(
+            new ItemStack("Iron Ore",20)
+        );
+
+        assertEquals(expected,calculator.calculateIngredients(targets, book));
     }
 
     

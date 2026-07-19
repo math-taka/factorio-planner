@@ -2,6 +2,8 @@ package factorio.calculator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import factorio.model.*;
 
 public class RecipeCalculator{
@@ -18,6 +20,19 @@ public class RecipeCalculator{
             List<ItemStack> subIngredients = calculateIngredients(
                 ingredient.multiplyAmount(ratio), recipeBook);
             ingredients=mergeItemStackList(ingredients, subIngredients);
+        }
+
+        return ingredients;
+    }
+
+    public List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook){
+        Objects.requireNonNull(targets);
+        Objects.requireNonNull(recipeBook);
+        
+        List<ItemStack> ingredients = new ArrayList<>();
+
+        for(ItemStack target:targets){
+            ingredients=mergeItemStackList(ingredients, calculateIngredients(target, recipeBook));
         }
 
         return ingredients;

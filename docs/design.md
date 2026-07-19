@@ -88,6 +88,8 @@ factorio.calculator
  - calculateIngredients(ItemStack target,RecipeBook recipeBook) return List<ItemStack>
     ItemStack で指定されたアイテムと数量分を RecipeBook のレシピ通りに生産するために必要な素材を計算する。
     戻り値のリストには同じアイテム名の ItemStack が重複しないようにする。
+ - calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook) return List<ItemStack>
+    複数アイテムの必要素材を計算し、同じ素材は合算した結果を返す
 
 ## Algorithm
     1. レシピが存在しないなら target を返す
@@ -117,3 +119,6 @@ factorio.calculator
 - RecipeCalculator をリファクタリング
 - ItemStack に multiplyAmount() を追加
 - 設計書を更新
+
+## Ver0.3
+- calculateIngredients(List,RecipeBook) を追加して複数アイテムに対する材料の合算をサポート
