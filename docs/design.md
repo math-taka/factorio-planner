@@ -25,8 +25,7 @@ factorio.model
 ## Notes
 - recordで実装する
 - Immutable
-- 計算処理は持たせない×
-　→量の足し算、定数倍ができる
+- ItemStack 自身に関する基本操作は実装する
 
 # Recipe
 
@@ -106,7 +105,10 @@ factorio.calculator
  - 計算機能のみを持つ
 
 ## Future
- - 将来的には複数種類の生産物に対しての計算の実装も考える
+ - 生産ツリーを返す計算への拡張
+ - 生産設備を考慮した計算
+ - モジュールへの対応
+
 
 #更新履歴
 
@@ -122,3 +124,4 @@ factorio.calculator
 
 ## Ver0.3
 - calculateIngredients(List,RecipeBook) を追加して複数アイテムに対する材料の合算をサポート
+- 複数アイテムに対する計算用のテストを追加
