@@ -24,7 +24,7 @@ public class RecipeCalculatorTest {
             3.2
         );
 
-        ItemStack GearWheelForRecipe = new ItemStack("GearWheel",1);
+        ItemStack GearWheelForRecipe = new ItemStack("Gear Wheel",1);
         ItemStack ironPlateForGear = new ItemStack("Iron Plate",2);
 
         Recipe GearWheelRecipe = new Recipe(
@@ -60,4 +60,22 @@ public class RecipeCalculatorTest {
         assertEquals(expected,calculator.calculateIngredients(need, book));
 
     }
+
+    @Test
+    void recursivelyCalculatesGearWheel(){
+        ItemStack need = new ItemStack("Gear Wheel",2);
+        List<ItemStack> expected = List.of(new ItemStack("Iron Ore",4));
+
+        assertEquals(expected,calculator.calculateIngredients(need, book));
+    }
+
+    @Test
+    void recursivelyCalculatesTransportBelt(){
+        ItemStack need = new ItemStack("Transport Belt",4);
+        List<ItemStack> expected = List.of(new ItemStack("Iron Ore",6));
+
+        assertEquals(expected,calculator.calculateIngredients(need, book));
+    }
+
+    
 }
