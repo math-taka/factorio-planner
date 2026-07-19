@@ -7,46 +7,48 @@ import factorio.model.*;
 public class RecipeCalculator{
 
     public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook){
+        if(!recipeBook.isContained(target.item()))return List.of(target);
+
         Recipe recipe = recipeBook.getRecipe(target.item());
         List<ItemStack> ingredients = new ArrayList<>();
 
-        double ratio=target.amount();
-        for(ItemStack itm:recipe.products()){
-            if(itm.sameItem(target)){
-                ratio/=itm.amount();
-                break;
-            }
-        }
+        double ratio=calculateRatio(target,recipe);
 
         for(ItemStack ingredient : recipe.ingredients()){
             double amount= ratio*ingredient.amount();
-            if(recipeBook.isContained(ingredient.item())){
-                List<ItemStack> subIngredients=calculateIngredients(
-                    new ItemStack(ingredient.item(),amount), recipeBook);
-                ingredients=mergeItemStackList(ingredients, subIngredients);
-            }else{
-                ingredients.add(new ItemStack(ingredient.item(),amount));
-            }
+            List<ItemStack> subIngredients = calculateIngredients(
+                new ItemStack(ingredient.item(),amount), recipeBook);
+            ingredients=mergeItemStackList(ingredients, subIngredients);
         }
 
         return ingredients;
     }
 
+    private double calculateRatio(ItemStack target,Recipe recipe){
+        double ratio=target.amount();
+        for(ItemStack product:recipe.products()){
+            if(product.sameItem(target)){
+                ratio/=product.amount();
+                break;
+            }
+        }
+
+        return ratio;
+    }
+
     private List<ItemStack> mergeItemStackList(List<ItemStack> list1,List<ItemStack> list2){
         List<ItemStack> mergedList=new ArrayList<>(list1);
 
-        //list1 と list2 を合わせたリスト margedList を作る
-        listloop:for(int i=0;i<list2.size();i++){
-            ItemStack itst=list2.get(i);
+        listloop:for(ItemStack adding:list2){
             for(int j=0;j<mergedList.size();j++){
-                ItemStack listed=mergedList.get(j);
-                if(listed.sameItem(itst)){
-                    mergedList.set(j,listed.addAmount(itst.amount()));
+                ItemStack existing=mergedList.get(j);
+                if(existing.sameItem(adding)){
+                    mergedList.set(j,existing.addAmount(adding.amount()));
                     continue listloop;
                 }
             }
 
-            mergedList.add(itst);
+            mergedList.add(adding);
         }
 
         return mergedList;

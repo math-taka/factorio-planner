@@ -48,11 +48,6 @@ public class RecipeCalculatorTest {
     }
     
     @Test
-    void sampleTest(){
-        assertEquals(2,1+1);
-    }
-
-    @Test
     void calculatesIronPlateIngredients(){
         ItemStack need = new ItemStack("Iron Plate",10);
         List<ItemStack> expected = List.of(new ItemStack("Iron Ore",10));
