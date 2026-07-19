@@ -1,7 +1,12 @@
+factorio.model
+
 # ItemStack
 
 ## Responsibility
-アイテムと数量の組を表す。
+- アイテム名と数量を保持する
+- 同一アイテムかどうかを判定する
+- 数量を加算した ItemStack を返す
+- 数量を定数倍した ItemStack を返す
 
 ## Fields
 - item
@@ -12,18 +17,21 @@
    item が一致するかを判定する
 
 - addAmount(double value) reutrn ItemStack
-    量を加算した ItemStack を生成する
+    数量を加算した ItemStack を生成する
+
+- multiplyAmount(double ratio) return ItemStack
+    数量を定数倍した ItemStack を生成する
 
 ## Notes
 - recordで実装する
 - Immutable
 - 計算処理は持たせない×
-　→量の足し算ができる
+　→量の足し算、定数倍ができる
 
 # Recipe
 
 ## Responsibility
-レシピの材料、生成物、作成条件を表す
+- レシピの材料、生成物、作成時間を保持する
 
 ## Field
 - ingredients:List<ItemStack>
@@ -45,10 +53,12 @@
 # RecipeBook
 
 ## Responsibility 
-計算に使用するレシピ選択を保持する
+- 計算に使用するレシピ選択を保持する
+- 指定のアイテムのレシピが選択されたレシピの中に存在するかを判定する
 
 ## Fields
- - book:Map<String,Recipe> 
+ - book:Map<String,Recipe>
+    Map.copyOf を使用しており Immutable
  
 ## Methods 
  - getRecipe(String) return Recipe 
@@ -62,6 +72,8 @@
  - 計算はしない
  - 対応関係のみを保持する
  ‐ Ver0.1 では変更不可(Immutable)
+
+factorio.calculator
 
 # RecipeCalculator
 
@@ -78,15 +90,14 @@
     戻り値のリストには同じアイテム名の ItemStack が重複しないようにする。
 
 ## Algorithm
-目的のアイテムとその個数を受け取る
-↓
-レシピを取得
-　├　レシピがない→そのまま返す
-　└　レシピがある→材料を計算
-↓
-各材料について材料を計算しリストに加える
-↓
-重複した材料を合算
+    1. レシピが存在しないなら target を返す
+    2. レシピを取得
+    3. 生産倍率を計算
+    4. 各材料について
+        ・倍率を掛けて必要数を計算
+        ・再帰的に材料を計算
+        ・結果を合算
+    5. 結果を返す
 
 ## Notes
  - class で実装
@@ -94,3 +105,15 @@
 
 ## Future
  - 将来的には複数種類の生産物に対しての計算の実装も考える
+
+#更新履歴
+
+## Ver0.1
+- レシピ計算機を実装
+- 再帰計算に対応
+
+## Ver0.2
+- JUnit を導入
+- RecipeCalculator をリファクタリング
+- ItemStack に multiplyAmount() を追加
+- 設計書を更新
