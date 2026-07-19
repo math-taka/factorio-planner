@@ -15,9 +15,8 @@ public class RecipeCalculator{
         double ratio=calculateRatio(target,recipe);
 
         for(ItemStack ingredient : recipe.ingredients()){
-            double amount= ratio*ingredient.amount();
             List<ItemStack> subIngredients = calculateIngredients(
-                new ItemStack(ingredient.item(),amount), recipeBook);
+                ingredient.multiplyAmount(ratio), recipeBook);
             ingredients=mergeItemStackList(ingredients, subIngredients);
         }
 

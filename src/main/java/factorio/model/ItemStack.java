@@ -11,4 +11,8 @@ public record ItemStack(
     public ItemStack addAmount(double value){
         return new ItemStack(item,amount+value);
     }
+
+    public ItemStack multiplyAmount(double ratio){
+        return new ItemStack(item,amount*ratio);
+    }
 }
