@@ -1,0 +1,32 @@
+[
+    {
+        "ingredients":[
+            {
+                "item":"iron_ore",
+                "amount":1
+            }
+        ],
+        "products":[
+            {
+                "item":"iron_plate",
+                "amount":1
+            }
+        ],
+        "craftingTime":3.2
+    },
+    {
+        "ingredients":[
+            {
+                "item":"iron_plate",
+                "amount":2
+            }
+        ],
+        "products":[
+            {
+                "item":"gear_wheel",
+                "amount":1
+            }
+        ],
+        "craftingTime":0.5
+    }
+]
