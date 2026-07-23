@@ -108,7 +108,31 @@ factorio.calculator
  - 生産ツリーを返す計算への拡張
  - 生産設備を考慮した計算
  - モジュールへの対応
+ - 循環レシピの検出
 
+
+factorio.io
+
+# RecipeLoader
+## Responsibility
+
+ - JSON ファイルから RecipeBook を生成する
+
+## Methods
+
+ - load(File file) return RecipeBook
+    JSON ファイルを読み込み、RecipeBook を生成する
+
+## Algorithm
+ 1. JSON ファイルを読み込む
+ 2. List<Recipe> に変換
+ 3. RecipeBook を生成
+ 4. 生成した RecipeBook を返す
+
+## Notes
+ - static メソッドとして実装
+ - Jackson(ObjectMapper) を利用
+ - JSONの読み込みに失敗した場合は IOException を送る
 
 #更新履歴
 
@@ -125,3 +149,9 @@ factorio.calculator
 ## Ver0.3
 - calculateIngredients(List,RecipeBook) を追加して複数アイテムに対する材料の合算をサポート
 - 複数アイテムに対する計算用のテストを追加
+
+## Ver0.4
+ - Jackson を導入
+ - RecipeLoader を追加
+ - JSON から RecipeBook を読み込む機能を追加
+ - JSON の読み込みテストを JUnit に追加
