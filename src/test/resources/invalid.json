@@ -1,0 +1,11 @@
+[
+    {
+        "ingredients":[
+            {
+                "item":"iron_ore",
+                "amount":1
+            }
+        ],
+        "craftingTime":3.2
+    }
+]

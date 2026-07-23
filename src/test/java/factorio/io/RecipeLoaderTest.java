@@ -7,8 +7,11 @@ import factorio.model.Recipe;
 import factorio.model.RecipeBook;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class RecipeLoaderTest{
@@ -32,6 +35,24 @@ public class RecipeLoaderTest{
 
         assertEquals(recipe0,recipeBook.getRecipe("iron_plate"));
         assertEquals(recipe1,recipeBook.getRecipe("gear_wheel"));
-        assertEquals(false,recipeBook.isContained("iron_ore"));
+        assertFalse(recipeBook.isContained("iron_ore"));
+    }
+
+    @Test
+    void throwExceptionIfFileDoesNotExist(){
+        File file = new File("src/test/resources/dammy.json");
+
+        assertThrows(IOException.class,()->{
+            RecipeLoader.load(file);
+        });
+    }
+
+    @Test
+    void throwExceptionForInvalidJSON(){
+        File file = new File("src/test/resources/invalid.json");
+
+        assertThrows(NullPointerException.class,()->{
+            RecipeLoader.load(file);
+        });
     }
 }
