@@ -17,4 +17,11 @@ public final class RecipeLoader {
 
         return new RecipeBook(recipes);
     }
+
+    public static Recipe loadRecipe(File file) throws IOException{
+        ObjectMapper mapper = new ObjectMapper();
+        Recipe recipe = mapper.readValue(file,Recipe.class);
+
+        return recipe;
+    }
 }

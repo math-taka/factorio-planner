@@ -55,4 +55,27 @@ public class RecipeLoaderTest{
             RecipeLoader.load(file);
         });
     }
+
+    @Test
+    void LoadingSingleRecipe() throws IOException{
+        File file = new File("src/test/resources/recipe.json");
+        Recipe recipe = RecipeLoader.loadRecipe(file);
+
+        Recipe exactRecipe = new Recipe(
+            List.of(new ItemStack("iron_ore",1)),
+            List.of(new ItemStack("iron_plate",1)),
+            3.2
+        );
+        assertEquals(exactRecipe,recipe);
+    }
+
+    @Test
+    void throwExceptionIfRecipeFileDoesNotExist(){
+        File file = new File("src/test/resources/dammy.json");
+
+        assertThrows(IOException.class,()->{
+            RecipeLoader.loadRecipe(file);
+            
+        });
+    }
 }
