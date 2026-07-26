@@ -1,0 +1,19 @@
+{
+    "ingredients":[
+        {
+            "item":"gear_wheel",
+            "amount":1
+        },
+        {
+            "item":"iron_plate",
+            "amount":1
+        }
+    ],
+    "products":[
+        {
+            "item":"transport_belt",
+            "amount":2
+        }
+    ],
+    "craftingTime":0.5
+}

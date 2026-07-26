@@ -1,0 +1,15 @@
+{
+    "ingredients":[
+        {
+            "item":"copper_ore",
+            "amount":1
+        }
+    ],
+    "products":[
+        {
+            "item":"copper_plate",
+            "amount":1
+        }
+    ],
+    "craftingTime":3.2
+}

@@ -1,0 +1,15 @@
+{
+    "ingredients":[
+        {
+            "item":"iron_ore",
+            "amount":1
+        }
+    ],
+    "products":[
+        {
+            "item":"iron_plate",
+            "amount":1
+        }
+    ],
+    "caftingTime":3.2
+}

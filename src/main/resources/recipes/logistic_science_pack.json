@@ -1,0 +1,19 @@
+{
+    "ingredients":[
+        {
+            "item":"transport_belt",
+            "amount":1
+        },
+        {
+            "item":"inserter",
+            "amount":1
+        }
+    ],
+    "products":[
+        {
+            "item":"logistic_science_pack",
+            "amount":1
+        }
+    ],
+    "craftingTime":6
+}
