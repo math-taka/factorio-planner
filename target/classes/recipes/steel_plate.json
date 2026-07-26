@@ -1,0 +1,15 @@
+{
+    "ingredients":[
+        {
+            "item":"iron_plate",
+            "amount":5
+        }
+    ],
+    "products":[
+        {
+            "item":"steel_plate",
+            "amount":1
+        }
+    ],
+    "craftingTime":16
+}

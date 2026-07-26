@@ -1,0 +1,15 @@
+{
+    "ingredients":[
+        {
+            "item":"iron_plate",
+            "amount":2
+        }
+    ],
+    "products":[
+        {
+            "item":"gear_wheel",
+            "amount":1
+        }
+    ],
+    "craftingTime":0.5
+}
