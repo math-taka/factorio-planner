@@ -5,7 +5,9 @@ import java.util.List;
 public record Recipe(
     List<ItemStack> ingredients,
     List<ItemStack> products,
-    double craftingTime
+    double craftingTime,
+    FactoryType factoryType,
+    boolean usableProductivityModule
 ){
     
 }

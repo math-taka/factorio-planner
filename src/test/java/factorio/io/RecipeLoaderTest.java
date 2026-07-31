@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import factorio.model.ItemStack;
 import factorio.model.Recipe;
 import factorio.model.RecipeBook;
+import factorio.model.FactoryType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,13 +25,17 @@ public class RecipeLoaderTest{
         Recipe recipe0=new Recipe(
             List.of(new ItemStack("iron_ore",1)),
             List.of(new ItemStack("iron_plate",1)),
-            3.2
+            3.2,
+            FactoryType.ASSEMBLER,
+            true
         );
 
         Recipe recipe1=new Recipe(
             List.of(new ItemStack("iron_plate",2)),
             List.of(new ItemStack("gear_wheel",1)),
-            0.5
+            0.5,
+            FactoryType.ASSEMBLER,
+            true
         );
 
         assertEquals(recipe0,recipeBook.getRecipe("iron_plate"));
@@ -64,7 +69,9 @@ public class RecipeLoaderTest{
         Recipe exactRecipe = new Recipe(
             List.of(new ItemStack("iron_ore",1)),
             List.of(new ItemStack("iron_plate",1)),
-            3.2
+            3.2,
+            FactoryType.ASSEMBLER,
+            true
         );
         assertEquals(exactRecipe,recipe);
     }

@@ -12,7 +12,9 @@
                 "amount":1
             }
         ],
-        "craftingTime":3.2
+        "craftingTime":3.2,
+        "factoryType":"FURNACE",
+        "usableProductivityModule":true
     },
     {
         "ingredients":[
@@ -27,6 +29,8 @@
                 "amount":1
             }
         ],
-        "craftingTime":0.5
+        "craftingTime":0.5,
+        "factoryType":"ASSEMBLER",
+        "usableProductivityModule":true
     }
 ]

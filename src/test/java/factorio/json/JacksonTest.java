@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.List;
 
 import factorio.model.Recipe;
+import factorio.model.FactoryType;
 import factorio.model.ItemStack;
 
 public class JacksonTest {
@@ -52,13 +53,17 @@ public class JacksonTest {
         Recipe recipe0=new Recipe(
             List.of(new ItemStack("iron_ore",1)),
             List.of(new ItemStack("iron_plate",1)),
-            3.2
+            3.2,
+            FactoryType.FURNACE,
+            true
         );
 
         Recipe recipe1=new Recipe(
             List.of(new ItemStack("iron_plate",2)),
             List.of(new ItemStack("gear_wheel",1)),
-            0.5
+            0.5,
+            FactoryType.ASSEMBLER,
+            true
         );
         
         assertEquals(recipe0,recipeList.get(0));

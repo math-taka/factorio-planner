@@ -21,7 +21,9 @@ public class RecipeCalculatorTest {
         Recipe ironPlateRecipe = new Recipe(
             List.of(ironOreForIronPlate),
             List.of(ironPlateForRecipe),
-            3.2
+            3.2,
+            FactoryType.FURNACE,
+            true
         );
 
 
@@ -31,7 +33,9 @@ public class RecipeCalculatorTest {
         Recipe GearWheelRecipe = new Recipe(
             List.of(ironPlateForGear),
             List.of(GearWheelForRecipe),
-            0.5
+            0.5,
+            FactoryType.ASSEMBLER,
+            true
         );
 
 
@@ -42,7 +46,9 @@ public class RecipeCalculatorTest {
         Recipe transportBeltRecipe = new Recipe(
             List.of(ironPlateForBelt,GearWheelForBelt),
             List.of(transportBeltForRecipe),
-            0.5
+            0.5,
+            FactoryType.ASSEMBLER,
+            false
         );
 
 

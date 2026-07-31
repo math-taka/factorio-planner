@@ -11,5 +11,7 @@
             "amount":1
         }
     ],
-    "craftingTime":16
+    "craftingTime":16,
+    "factoryType":"FURNACE",
+    "usableProductivityModule":true
 }

@@ -15,5 +15,7 @@
             "amount":1
         }
     ],
-    "craftingTime":5
+    "craftingTime":5,
+    "factoryType":"ASSEMBLER",
+    "usableProductivityModule":true
 }
