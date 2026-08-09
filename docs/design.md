@@ -84,16 +84,21 @@ factorio.calculator
 
 ## Methods
 
- - calculateIngredients(ItemStack target,RecipeBook recipeBook) return List<ItemStack>
-    ItemStack で指定されたアイテムと数量分を RecipeBook のレシピ通りに生産するために必要な素材を計算する。
+ - calculateIngredients(ItemStack target,RecipeBook recipeBook,double furnaceProductivity, double assemblerProductivity,double chemicalPlantProductivity) return List<ItemStack>
+    ItemStack で指定されたアイテムと数量分を RecipeBook のレシピ通りに生産するために必要な素材を指定された生産性を加味して計算する。
     戻り値のリストには同じアイテム名の ItemStack が重複しないようにする。
+ - calculateIngredients(ItemStack target,RecipeBook recipeBook) return List<ItemStack>
+    生産性ボーナスをすべて0として素材を計算する。
+ - calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook,double furnaceProductivity, double assemblerProductivity,double chemicalPlantProductivity) return List<ItemStack>
+    複数アイテムの必要素材を与えられた生産性ボーナスに従って計算し、同じ素材は合算した結果を返す
  - calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook) return List<ItemStack>
-    複数アイテムの必要素材を計算し、同じ素材は合算した結果を返す
+    複数アイテムの必要素材を生産性ボーナスは 0 として計算し、同じ素材は合算した結果を返す
 
 ## Algorithm
     1. レシピが存在しないなら target を返す
     2. レシピを取得
     3. 生産倍率を計算
+        ・レシピが生産性モジュールが使用可能ならそれも加味する
     4. 各材料について
         ・倍率を掛けて必要数を計算
         ・再帰的に材料を計算
@@ -103,11 +108,11 @@ factorio.calculator
 ## Notes
  - class で実装
  - 計算機能のみを持つ
+ - 生産性に対応済み
 
 ## Future
  - 生産ツリーを返す計算への拡張
  - 生産設備を考慮した計算
- - モジュールへの対応
  - 循環レシピの検出
 
 
