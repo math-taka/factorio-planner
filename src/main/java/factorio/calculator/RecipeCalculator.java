@@ -8,38 +8,61 @@ import factorio.model.*;
 
 public class RecipeCalculator{
 
-    public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook){
+    public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook,
+            double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         if(!recipeBook.isContained(target.item()))return List.of(target);
 
         Recipe recipe = recipeBook.getRecipe(target.item());
         List<ItemStack> ingredients = new ArrayList<>();
 
-        double ratio=calculateRatio(target,recipe);
+        double ratio=calculateRatio(target,recipe,
+            furnaceProductivity,assemblerProductivity,chemicalPlantProductivity);
 
         for(ItemStack ingredient : recipe.ingredients()){
             List<ItemStack> subIngredients = calculateIngredients(
-                ingredient.multiplyAmount(ratio), recipeBook);
+                ingredient.multiplyAmount(ratio), recipeBook,
+                furnaceProductivity,assemblerProductivity,chemicalPlantProductivity);
             ingredients=mergeItemStackList(ingredients, subIngredients);
         }
 
         return ingredients;
     }
 
-    public List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook){
+     public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook){
+        return calculateIngredients(target, recipeBook,0,0,0);
+     }
+
+    public List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook,
+            double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         Objects.requireNonNull(targets);
         Objects.requireNonNull(recipeBook);
         
         List<ItemStack> ingredients = new ArrayList<>();
 
         for(ItemStack target:targets){
-            ingredients=mergeItemStackList(ingredients, calculateIngredients(target, recipeBook));
+            ingredients=mergeItemStackList(ingredients, calculateIngredients(target, recipeBook,
+                furnaceProductivity,assemblerProductivity,chemicalPlantProductivity));
         }
 
         return ingredients;
     }
 
-    private double calculateRatio(ItemStack target,Recipe recipe){
+    public List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook){
+        return calculateIngredients(targets, recipeBook, 0, 0, 0);
+    }
+
+    private double calculateRatio(ItemStack target,Recipe recipe,
+            double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         double ratio=target.amount();
+
+        if(recipe.usableProductivityModule()){
+            switch(recipe.factoryType()){
+                case FURNACE-> ratio/=(1+furnaceProductivity);
+                case ASSEMBLER->ratio/=(1+assemblerProductivity);
+                case CHEMICAL_PLANT->ratio/=(1+chemicalPlantProductivity);
+            }
+        }
+
         for(ItemStack product:recipe.products()){
             if(product.sameItem(target)){
                 ratio/=product.amount();
