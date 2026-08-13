@@ -26,7 +26,7 @@ public class RecipeLoaderTest{
             List.of(new ItemStack("iron_ore",1)),
             List.of(new ItemStack("iron_plate",1)),
             3.2,
-            FactoryType.ASSEMBLER,
+            FactoryType.FURNACE,
             true
         );
 
