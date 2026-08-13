@@ -1,5 +1,8 @@
 /workspaces/factorio-planner/src/main/java/factorio/Main.java
 /workspaces/factorio-planner/src/main/java/factorio/calculator/RecipeCalculator.java
+/workspaces/factorio-planner/src/main/java/factorio/io/RecipeLoader.java
+/workspaces/factorio-planner/src/main/java/factorio/model/FactoryType.java
 /workspaces/factorio-planner/src/main/java/factorio/model/ItemStack.java
+/workspaces/factorio-planner/src/main/java/factorio/model/ProductionNode.java
 /workspaces/factorio-planner/src/main/java/factorio/model/Recipe.java
 /workspaces/factorio-planner/src/main/java/factorio/model/RecipeBook.java
