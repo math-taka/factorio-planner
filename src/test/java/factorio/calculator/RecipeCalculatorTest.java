@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import factorio.io.RecipeLoader;
 import factorio.model.*;
 
+import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -159,5 +160,45 @@ public class RecipeCalculatorTest {
         ProductionNode expected = new ProductionNode(target,List.of(expectedChild2_1,expectedChild1));
         
         assertEquals(result,expected);
+    }
+
+    @Test
+    void productionTreeForMultipleTargets(){
+        List<ItemStack> targets = List.of(
+            new ItemStack("iron_plate",10), new ItemStack("gear_wheel",10)
+        );
+        List<ProductionNode> result = calculator.calculateProductionTree(
+            targets, book, 0, 0, 0
+        );
+
+        ProductionNode expected1Child = new ProductionNode(
+            new ItemStack("iron_ore",10),List.of()
+        );
+        ProductionNode expected1 = new ProductionNode(
+            targets.get(0),List.of(expected1Child)
+        );
+
+        ProductionNode expected2Child1_1 = new ProductionNode(
+            new ItemStack("iron_ore",20),List.of()
+        );
+        ProductionNode expected2Child1=new ProductionNode(
+            new ItemStack("iron_plate",20),List.of(expected2Child1_1)
+        );
+        ProductionNode expected2 = new ProductionNode(
+            targets.get(1),List.of(expected2Child1)
+        );
+
+        assertEquals(2,result.size());
+        assertEquals(expected1,result.get(0));
+        assertEquals(expected2,result.get(1));
+    }
+
+    @Test
+    void productionTreesForEmptyTargets(){
+        List<ProductionNode> result = calculator.calculateProductionTree(
+            List.of(), book, 0, 0, 0
+        );
+
+        assertEquals(true,result.isEmpty());
     }
 }

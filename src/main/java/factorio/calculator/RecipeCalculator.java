@@ -72,6 +72,19 @@ public class RecipeCalculator{
         return new ProductionNode(target,children);
     }
 
+    public List<ProductionNode> calculateProductionTree(List<ItemStack> targets, RecipeBook recipeBook,
+        double furnaceProductivity, double assemblerProductivity, double chemicalPlantProductivity
+    ){
+        List<ProductionNode> nodes = new ArrayList<>();
+
+        for(ItemStack target:targets){
+            nodes.add(calculateProductionTree(target, recipeBook, 
+                furnaceProductivity, assemblerProductivity, chemicalPlantProductivity));
+        }
+
+        return nodes;
+    }
+
     private double calculateRatio(ItemStack target,Recipe recipe,
             double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         double ratio=target.amount();
