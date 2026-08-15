@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import factorio.io.RecipeLoader;
 import factorio.model.*;
 
-import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
