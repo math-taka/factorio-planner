@@ -1,6 +1,8 @@
 package factorio.calculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,17 +12,24 @@ import factorio.model.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeCalculatorTest {
 
     private RecipeBook book;
     private RecipeCalculator calculator;
+    private ProductionSetting defaultSetting;
 
     @BeforeEach
     void setUp() throws IOException{
         book = RecipeLoader.load(new File("src/test/resources/recipeCalculatorTest.json"));
         calculator = new RecipeCalculator();
+        defaultSetting = new ProductionSetting(
+            0,0,0,
+            2,1.25,1
+        );
     }
     
     @Test
@@ -199,5 +208,81 @@ public class RecipeCalculatorTest {
         );
 
         assertEquals(true,result.isEmpty());
+    }
+
+    @Test
+    void calculatesFacilityRequirementForSingleStepNode(){
+        ProductionNode singleStep = calculator.calculateProductionTree(
+            new ItemStack("iron_plate",10), book, 0, 0, 0);
+        HashMap<FactoryType,Double> expected = new HashMap<>();
+        expected.put(FactoryType.FURNACE,16.0);
+
+        assertEquals(expected,calculator.calculateFacilityRequirements(
+            singleStep, book,defaultSetting));
+    }
+
+    @Test
+    void calculatesFacilityRequirementForMultiStepNode(){
+        ProductionNode multiStepNode = calculator.calculateProductionTree(
+            new ItemStack("gear_wheel",10), book, 0, 0, 0);
+        Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(
+            multiStepNode, book, defaultSetting);
+        
+        assertEquals(32,result.get(FactoryType.FURNACE));
+        assertEquals(4,result.get(FactoryType.ASSEMBLER));
+        assertFalse(result.containsKey(FactoryType.CHEMICAL_PLANT));
+    }
+
+    @Test
+    void calculateFacilityRequirementWithProductionSpeed(){
+        ProductionNode node = calculator.calculateProductionTree(
+            new ItemStack("iron_plate",10), book, 0, 0, 0);
+        ProductionSetting setting = new ProductionSetting(
+            0,0,0,1,1,1
+        );
+        Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(
+            node, book, setting);
+        
+        assertEquals(32,result.get(FactoryType.FURNACE));
+    }
+
+    @Test
+    void calculateFacilityRequirementWithProductivity(){
+        ProductionNode node = calculator.calculateProductionTree(
+            new ItemStack("iron_plate",10), book, 0, 0, 0);
+        ProductionSetting setting = new ProductionSetting(
+            0.6,0,0,
+            2,1,1
+        );
+        Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(
+            node, book, setting);
+        
+        assertEquals(10,result.get(FactoryType.FURNACE));
+    }
+
+    @Test
+    void ignoresRawMaterialNode(){
+        ProductionNode ironOre = new ProductionNode(
+            new ItemStack("ironOre",100),List.of()
+        );
+        
+        assertTrue(
+            calculator.calculateFacilityRequirements(
+                ironOre, book, defaultSetting).isEmpty()
+        );
+    }
+
+    @Test
+    void aggregatesSameFactoryTypeRequirements(){
+        ProductionNode node = calculator.calculateProductionTree(
+            new ItemStack("transport_belt",20),book,
+            0,0,0
+        );
+
+        Map<FactoryType,Double> result =calculator.calculateFacilityRequirements(
+            node, book, defaultSetting);
+
+        assertEquals(48,result.get(FactoryType.FURNACE));
+        assertEquals(8,result.get(FactoryType.ASSEMBLER));
     }
 }

@@ -1,7 +1,9 @@
 package factorio.calculator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import factorio.model.*;
@@ -85,6 +87,51 @@ public class RecipeCalculator{
         return nodes;
     }
 
+    public Map<FactoryType,Double> calculateFacilityRequirements(
+        ProductionNode node, RecipeBook recipeBook, ProductionSetting setting
+    ){
+        Map<FactoryType,Double> requirements= new HashMap<>();
+        
+        if(node.children().isEmpty()){
+            return requirements;
+        }
+
+        Recipe recipe = recipeBook.getRecipe(node.itemStack().item());
+        double numberOfProductionRun = calculateRatio(node.itemStack(), recipe, 
+            setting.furnaceProductivity(), setting.assemblerProductivity(), setting.chemicalPlantProductivity());
+        double productionSpeed = 1/recipe.craftingTime();
+
+        switch (recipe.factoryType()) {
+            case FURNACE:
+                productionSpeed*=setting.furnaceProductionSpeed();
+                break;
+            case ASSEMBLER:
+                productionSpeed*=setting.assemblerProductionSpeed();
+                break;
+            case CHEMICAL_PLANT:
+                productionSpeed*=setting.chemicalPlantProductionSpeed();
+            default:
+                break;
+        }
+
+        requirements.put(recipe.factoryType(),numberOfProductionRun/productionSpeed);
+        for(ProductionNode child:node.children()){
+            Map<FactoryType,Double> childMap = calculateFacilityRequirements(
+                child, recipeBook, setting
+            );
+
+            for(FactoryType key:childMap.keySet()){
+                if(requirements.containsKey(key)){
+                    requirements.replace(key, requirements.get(key)+childMap.get(key));
+                }else{
+                    requirements.put(key,childMap.get(key));
+                }
+            }
+        }
+
+        return requirements;
+    }
+    
     private double calculateRatio(ItemStack target,Recipe recipe,
             double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         double ratio=target.amount();
