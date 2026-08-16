@@ -234,7 +234,7 @@ public class RecipeCalculatorTest {
     }
 
     @Test
-    void calculateFacilityRequirementWithProductionSpeed(){
+    void calculatesFacilityRequirementWithProductionSpeed(){
         ProductionNode node = calculator.calculateProductionTree(
             new ItemStack("iron_plate",10), book, 0, 0, 0);
         ProductionSetting setting = new ProductionSetting(
@@ -247,7 +247,7 @@ public class RecipeCalculatorTest {
     }
 
     @Test
-    void calculateFacilityRequirementWithProductivity(){
+    void calculatesFacilityRequirementWithProductivity(){
         ProductionNode node = calculator.calculateProductionTree(
             new ItemStack("iron_plate",10), book, 0, 0, 0);
         ProductionSetting setting = new ProductionSetting(
@@ -284,5 +284,40 @@ public class RecipeCalculatorTest {
 
         assertEquals(48,result.get(FactoryType.FURNACE));
         assertEquals(8,result.get(FactoryType.ASSEMBLER));
+    }
+
+    @Test
+    void calculatesFacilityRequirementForNoTree(){
+        Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(
+            List.of(), book, defaultSetting);
+        
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void calculatesFacilityRequirementForSingleTree(){
+        ProductionNode node = calculator.calculateProductionTree(
+            new ItemStack("iron_plate",10), book, 0, 0, 0);
+        assertEquals(
+            calculator.calculateFacilityRequirements(node, book, defaultSetting),
+            calculator.calculateFacilityRequirements(List.of(node), book, defaultSetting)
+        );
+    }
+
+    @Test
+    void calculatesFacilityRequirementsForMultiTree(){
+        ProductionNode node1 = calculator.calculateProductionTree(
+            new ItemStack("iron_plate",10),book,0,0,0
+        );
+        ProductionNode node2 = calculator.calculateProductionTree(
+            new ItemStack("gear_wheel",10), book, 0, 0, 0
+        );
+
+        Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(
+            List.of(node1,node2),book,defaultSetting
+        );
+
+        assertEquals(48, result.get(FactoryType.FURNACE));
+        assertEquals(4,result.get(FactoryType.ASSEMBLER));
     }
 }

@@ -131,6 +131,19 @@ public class RecipeCalculator{
 
         return requirements;
     }
+
+    public Map<FactoryType,Double> calculateFacilityRequirements(
+        List<ProductionNode> nodes, RecipeBook book, ProductionSetting setting
+    ){
+        Map<FactoryType,Double> requirements = new HashMap<>();
+
+        for(ProductionNode node:nodes){
+            Map<FactoryType,Double> subRequirements = calculateFacilityRequirements(
+                node, book, setting);
+            requirements = mergeFacilityRequirements(requirements, subRequirements);
+        }
+        return requirements;
+    } 
     
     private double calculateRatio(ItemStack target,Recipe recipe,
             double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
@@ -170,5 +183,19 @@ public class RecipeCalculator{
         }
 
         return mergedList;
+    }
+
+    private Map<FactoryType,Double> mergeFacilityRequirements(
+        Map<FactoryType,Double> req1, Map<FactoryType,Double> req2
+    ){
+        Map<FactoryType,Double> mergedRequirement = new HashMap<>(req1);
+    for(FactoryType key:req2.keySet()){
+                if(mergedRequirement.containsKey(key)){
+                    mergedRequirement.replace(key, mergedRequirement.get(key)+req2.get(key));
+                }else{
+                    mergedRequirement.put(key,req2.get(key));
+                }
+            }
+        return mergedRequirement;
     }
 }
