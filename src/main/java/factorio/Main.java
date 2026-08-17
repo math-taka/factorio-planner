@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import factorio.model.ItemStack;
 import factorio.model.ProductionNode;
+import factorio.model.ProductionSetting;
 import factorio.model.Recipe;
 import factorio.model.RecipeBook;
 import factorio.calculator.RecipeCalculator;
@@ -48,7 +49,10 @@ public class Main{
             System.out.println(ingredient);
         }
 
-        List<ProductionNode> nodes = new RecipeCalculator().calculateProductionTree(needs, book, 0.08, 0.16, 0);
+        ProductionSetting setting = new ProductionSetting(
+            0.08, 0.12, 0.16,
+            2.0, 1.25, 1);
+        List<ProductionNode> nodes = new RecipeCalculator().calculateProductionTree(needs, book, setting);
         for(ProductionNode node:nodes){
             System.out.println(ProductionTreePrinter.print(node));
         }

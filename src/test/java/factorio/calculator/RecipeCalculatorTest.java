@@ -100,24 +100,32 @@ public class RecipeCalculatorTest {
     void noProductivityCalculation(){
         ItemStack target = new ItemStack("iron_plate",10);
         assertEquals(
-            calculator.calculateIngredients(target, book,0,0,0),
+            calculator.calculateIngredients(target, book,defaultSetting),
             calculator.calculateIngredients(target, book));
     }
 
     @Test
     void assemblingWithPositiveProductivity(){
         ItemStack target = new ItemStack("gear_wheel",11);
+        ProductionSetting positiveProductivity = new ProductionSetting(
+            0,0.1,0,
+            1,1,1
+        );
         List<ItemStack> expect = List.of(new ItemStack("iron_ore", 20));
 
-        assertEquals(calculator.calculateIngredients(target, book,0,0.1,0), expect);
+        assertEquals(calculator.calculateIngredients(target, book,positiveProductivity), expect);
     }
 
     @Test
-    void CalculateRecipebeingNotProductivityUsable(){
+    void ignoresProductivityForNonProductivityRecipe(){
         ItemStack target = new ItemStack("transport_belt",22);
+        ProductionSetting positiveProductivity = new ProductionSetting(
+            0,0.1,0,
+            1,1,1
+        );
         List<ItemStack> expect = List.of(new ItemStack("iron_ore", 31));
 
-        assertEquals(calculator.calculateIngredients(target, book,0,0.1,0), expect);
+        assertEquals(calculator.calculateIngredients(target, book,positiveProductivity), expect);
     }
 
     @Test
@@ -126,14 +134,14 @@ public class RecipeCalculatorTest {
         ProductionNode expected = new ProductionNode(target, List.of());
 
         assertEquals(calculator.calculateProductionTree(target, book, 
-            0, 0, 0), expected);
+            defaultSetting), expected);
     }
 
     @Test
     void productionTreeForSingleStepRecipe(){
         ItemStack target = new ItemStack("iron_plate",10);
         ProductionNode result = calculator.calculateProductionTree(target, book,
-             0, 0, 0);
+             defaultSetting);
         
         ProductionNode expectedChild = new ProductionNode(new ItemStack("iron_ore",10),List.of());
         ProductionNode expected = new ProductionNode(target,List.of(expectedChild));
@@ -144,8 +152,7 @@ public class RecipeCalculatorTest {
     @Test
     void productionTreeForMultiStepRecipe(){
         ItemStack target = new ItemStack("gear_wheel",10);
-        ProductionNode result = calculator.calculateProductionTree(target, book,
-             0, 0, 0);
+        ProductionNode result = calculator.calculateProductionTree(target, book,defaultSetting);
 
         ProductionNode expectedChild2 = new ProductionNode(new ItemStack("iron_ore",20),List.of());
         ProductionNode expectedChild1 = new ProductionNode(new ItemStack("iron_plate",20),List.of(expectedChild2));
@@ -157,8 +164,7 @@ public class RecipeCalculatorTest {
     @Test
     void productionTreeForMultipleIngredients(){
         ItemStack target = new ItemStack("transport_belt",20);
-        ProductionNode result = calculator.calculateProductionTree(target, book,
-             0, 0, 0);
+        ProductionNode result = calculator.calculateProductionTree(target, book,defaultSetting);
 
         ProductionNode expectedChild3_1 = new ProductionNode(new ItemStack("iron_ore",10),List.of());
         ProductionNode expectedChild3_2 = new ProductionNode(new ItemStack("iron_ore",20),List.of());
@@ -176,7 +182,7 @@ public class RecipeCalculatorTest {
             new ItemStack("iron_plate",10), new ItemStack("gear_wheel",10)
         );
         List<ProductionNode> result = calculator.calculateProductionTree(
-            targets, book, 0, 0, 0
+            targets, book, defaultSetting
         );
 
         ProductionNode expected1Child = new ProductionNode(
@@ -204,7 +210,7 @@ public class RecipeCalculatorTest {
     @Test
     void productionTreesForEmptyTargets(){
         List<ProductionNode> result = calculator.calculateProductionTree(
-            List.of(), book, 0, 0, 0
+            List.of(), book, defaultSetting
         );
 
         assertEquals(true,result.isEmpty());
@@ -213,7 +219,7 @@ public class RecipeCalculatorTest {
     @Test
     void calculatesFacilityRequirementForSingleStepNode(){
         ProductionNode singleStep = calculator.calculateProductionTree(
-            new ItemStack("iron_plate",10), book, 0, 0, 0);
+            new ItemStack("iron_plate",10), book, defaultSetting);
         HashMap<FactoryType,Double> expected = new HashMap<>();
         expected.put(FactoryType.FURNACE,16.0);
 
@@ -224,7 +230,7 @@ public class RecipeCalculatorTest {
     @Test
     void calculatesFacilityRequirementForMultiStepNode(){
         ProductionNode multiStepNode = calculator.calculateProductionTree(
-            new ItemStack("gear_wheel",10), book, 0, 0, 0);
+            new ItemStack("gear_wheel",10), book, defaultSetting);
         Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(
             multiStepNode, book, defaultSetting);
         
@@ -236,7 +242,7 @@ public class RecipeCalculatorTest {
     @Test
     void calculatesFacilityRequirementWithProductionSpeed(){
         ProductionNode node = calculator.calculateProductionTree(
-            new ItemStack("iron_plate",10), book, 0, 0, 0);
+            new ItemStack("iron_plate",10), book, defaultSetting);
         ProductionSetting setting = new ProductionSetting(
             0,0,0,1,1,1
         );
@@ -249,7 +255,7 @@ public class RecipeCalculatorTest {
     @Test
     void calculatesFacilityRequirementWithProductivity(){
         ProductionNode node = calculator.calculateProductionTree(
-            new ItemStack("iron_plate",10), book, 0, 0, 0);
+            new ItemStack("iron_plate",10), book, defaultSetting);
         ProductionSetting setting = new ProductionSetting(
             0.6,0,0,
             2,1,1
@@ -275,8 +281,7 @@ public class RecipeCalculatorTest {
     @Test
     void aggregatesSameFactoryTypeRequirements(){
         ProductionNode node = calculator.calculateProductionTree(
-            new ItemStack("transport_belt",20),book,
-            0,0,0
+            new ItemStack("transport_belt",20),book,defaultSetting
         );
 
         Map<FactoryType,Double> result =calculator.calculateFacilityRequirements(
@@ -297,7 +302,7 @@ public class RecipeCalculatorTest {
     @Test
     void calculatesFacilityRequirementForSingleTree(){
         ProductionNode node = calculator.calculateProductionTree(
-            new ItemStack("iron_plate",10), book, 0, 0, 0);
+            new ItemStack("iron_plate",10), book, defaultSetting);
         assertEquals(
             calculator.calculateFacilityRequirements(node, book, defaultSetting),
             calculator.calculateFacilityRequirements(List.of(node), book, defaultSetting)
@@ -307,10 +312,10 @@ public class RecipeCalculatorTest {
     @Test
     void calculatesFacilityRequirementsForMultiTree(){
         ProductionNode node1 = calculator.calculateProductionTree(
-            new ItemStack("iron_plate",10),book,0,0,0
+            new ItemStack("iron_plate",10),book,defaultSetting
         );
         ProductionNode node2 = calculator.calculateProductionTree(
-            new ItemStack("gear_wheel",10), book, 0, 0, 0
+            new ItemStack("gear_wheel",10), book, defaultSetting
         );
 
         Map<FactoryType,Double> result = calculator.calculateFacilityRequirements(

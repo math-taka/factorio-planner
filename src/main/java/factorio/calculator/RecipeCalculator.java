@@ -10,7 +10,7 @@ import factorio.model.*;
 
 public class RecipeCalculator{
 
-    public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook,
+    private List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook,
             double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         if(!recipeBook.isContained(target.item()))return List.of(target);
 
@@ -30,11 +30,19 @@ public class RecipeCalculator{
         return ingredients;
     }
 
-     public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook){
+    public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook){
         return calculateIngredients(target, recipeBook,0,0,0);
-     }
+    }
 
-    public List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook,
+    public List<ItemStack> calculateIngredients(ItemStack target,RecipeBook recipeBook,ProductionSetting setting){
+        return calculateIngredients(target, recipeBook,
+            setting.furnaceProductivity(),
+            setting.assemblerProductivity(),
+            setting.chemicalPlantProductivity()
+        );
+    }
+
+    private List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook,
             double furnaceProductivity,double assemblerProductivity,double chemicalPlantProductivity){
         Objects.requireNonNull(targets);
         Objects.requireNonNull(recipeBook);
@@ -53,7 +61,15 @@ public class RecipeCalculator{
         return calculateIngredients(targets, recipeBook, 0, 0, 0);
     }
 
-    public ProductionNode calculateProductionTree(ItemStack target, RecipeBook recipeBook,
+    public List<ItemStack> calculateIngredients(List<ItemStack> targets,RecipeBook recipeBook,ProductionSetting setting){
+        return calculateIngredients(targets, recipeBook,
+            setting.furnaceProductivity(),
+            setting.assemblerProductivity(),
+            setting.chemicalPlantProductivity()
+        );
+    }
+
+    private ProductionNode calculateProductionTree(ItemStack target, RecipeBook recipeBook,
         double furnaceProductivity, double assemblerProductivity, double chemicalPlantProductivity
     ){
         if(!recipeBook.isContained(target.item()))return new ProductionNode(target, List.of());
@@ -74,7 +90,18 @@ public class RecipeCalculator{
         return new ProductionNode(target,children);
     }
 
-    public List<ProductionNode> calculateProductionTree(List<ItemStack> targets, RecipeBook recipeBook,
+    public ProductionNode calculateProductionTree(
+        ItemStack target,RecipeBook recipeBook, ProductionSetting setting
+    ){
+        return calculateProductionTree(
+            target, recipeBook,
+            setting.furnaceProductivity(),
+            setting.assemblerProductivity(),
+            setting.chemicalPlantProductivity()
+        );
+    }
+
+    private List<ProductionNode> calculateProductionTree(List<ItemStack> targets, RecipeBook recipeBook,
         double furnaceProductivity, double assemblerProductivity, double chemicalPlantProductivity
     ){
         List<ProductionNode> nodes = new ArrayList<>();
@@ -85,6 +112,17 @@ public class RecipeCalculator{
         }
 
         return nodes;
+    }
+
+    public List<ProductionNode> calculateProductionTree(
+        List<ItemStack> targets, RecipeBook recipeBook,ProductionSetting setting
+    ){
+        return calculateProductionTree(
+            targets, recipeBook,
+            setting.furnaceProductivity(),
+            setting.assemblerProductivity(),
+            setting.chemicalPlantProductivity()
+        );
     }
 
     public Map<FactoryType,Double> calculateFacilityRequirements(
