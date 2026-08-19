@@ -43,9 +43,7 @@ public class FactorioPlannerApp extends Application{
 
         Button addTargetButton = new Button("+ 生産目標を追加");
         addTargetButton.setOnAction(
-            event ->{
-                System.out.println("追加ボタンが押されました");
-            }
+            event -> addTargetRow()
         );
 
         productionTargetPane.getChildren().addAll(
@@ -98,5 +96,9 @@ public class FactorioPlannerApp extends Application{
         );
 
         return targetRow;
+    }
+
+    private void addTargetRow(){
+        targetRows.getChildren().add(createTargetRow());
     }
 }
