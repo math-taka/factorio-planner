@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FactorioPlannerApp extends Application{
+    private VBox targetRows;
+
     @Override
     public void start(Stage stage){
         VBox productionTargetPane = new VBox();
@@ -35,7 +37,7 @@ public class FactorioPlannerApp extends Application{
             timeUnitComboBox
         );
 
-        VBox targetRows = new VBox();
+        targetRows = new VBox();
         targetRows.setSpacing(10);
         targetRows.getChildren().add(createTargetRow());
 
