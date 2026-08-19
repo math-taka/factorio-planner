@@ -40,7 +40,9 @@ public class FactorioPlannerApp extends Application{
 
         targetRows = new VBox();
         targetRows.setSpacing(10);
-        targetRows.getChildren().add(createTargetRow());
+        targetRows.getChildren().add(
+            new ProductionTargetRow(timeUnitComboBox)
+        );
 
         Button addTargetButton = new Button("+ 生産目標を追加");
         addTargetButton.setOnAction(
@@ -78,34 +80,9 @@ public class FactorioPlannerApp extends Application{
         launch(args);
     }
 
-    private HBox createTargetRow(){
-        HBox targetRow = new HBox();
-        targetRow.setSpacing(10);
-
-        ComboBox<String> itemComboBox = new ComboBox<>();
-        itemComboBox.getItems().addAll(
-            "鉄板",
-            "銅板",
-            "歯車"
-        );
-
-        TextField amountField = new TextField();
-        Label unitLabel = new Label("/sec");
-
-        timeUnitComboBox.valueProperty().addListener(
-            (observable,oldValue,newValue) -> {
-                unitLabel.setText(newValue);
-            }
-        );
-
-        targetRow.getChildren().addAll(
-            itemComboBox, amountField,unitLabel
-        );
-
-        return targetRow;
-    }
-
     private void addTargetRow(){
-        targetRows.getChildren().add(createTargetRow());
+        targetRows.getChildren().add(
+            new ProductionTargetRow(timeUnitComboBox)
+        );
     }
 }
