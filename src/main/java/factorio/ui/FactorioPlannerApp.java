@@ -18,6 +18,37 @@ public class FactorioPlannerApp extends Application{
 
     @Override
     public void start(Stage stage){
+        VBox productionTargetPane = createProductionTargetPane();
+
+        VBox productionSettingPane = createProductionSettingPane();
+
+        HBox root = new HBox(
+            productionTargetPane,
+            productionSettingPane
+        );
+        root.setPadding(new Insets(20));
+
+        HBox.setHgrow(productionTargetPane,Priority.ALWAYS);
+        HBox.setHgrow(productionSettingPane,Priority.ALWAYS);
+
+        Scene scene = new Scene(root,800,600);
+
+        stage.setTitle("Factorio Planner");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args){
+        launch(args);
+    }
+
+    private void addTargetRow(){
+        targetRows.getChildren().add(
+            new ProductionTargetRow(timeUnitComboBox)
+        );
+    }
+
+    private VBox createProductionTargetPane(){
         VBox productionTargetPane = new VBox();
         productionTargetPane.setSpacing(10);
 
@@ -55,34 +86,15 @@ public class FactorioPlannerApp extends Application{
             addTargetButton
         );
 
+        return productionTargetPane;
+    }
+
+    private VBox createProductionSettingPane(){
         VBox productionSettingPane = new VBox();
         productionSettingPane.getChildren().add(
             new Label("生産設定")
         );
 
-        HBox root = new HBox(
-            productionTargetPane,
-            productionSettingPane
-        );
-        root.setPadding(new Insets(20));
-
-        HBox.setHgrow(productionTargetPane,Priority.ALWAYS);
-        HBox.setHgrow(productionSettingPane,Priority.ALWAYS);
-
-        Scene scene = new Scene(root,800,600);
-
-        stage.setTitle("Factorio Planner");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void main(String[] args){
-        launch(args);
-    }
-
-    private void addTargetRow(){
-        targetRows.getChildren().add(
-            new ProductionTargetRow(timeUnitComboBox)
-        );
+        return productionSettingPane;
     }
 }
