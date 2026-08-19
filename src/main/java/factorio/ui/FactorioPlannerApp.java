@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 public class FactorioPlannerApp extends Application{
     private VBox targetRows;
+    private ComboBox<String> timeUnitComboBox;
 
     @Override
     public void start(Stage stage){
@@ -26,7 +27,7 @@ public class FactorioPlannerApp extends Application{
         Label targetLabel = new Label("生産目標");
         targetLabel.setStyle("-fx-font-size:18px");
 
-        ComboBox<String> timeUnitComboBox = new ComboBox<>();
+        timeUnitComboBox = new ComboBox<>();
         timeUnitComboBox.getItems().addAll(
             "/sec","/min"
         );
@@ -90,6 +91,12 @@ public class FactorioPlannerApp extends Application{
 
         TextField amountField = new TextField();
         Label unitLabel = new Label("/sec");
+
+        timeUnitComboBox.valueProperty().addListener(
+            (observable,oldValue,newValue) -> {
+                unitLabel.setText(newValue);
+            }
+        );
 
         targetRow.getChildren().addAll(
             itemComboBox, amountField,unitLabel
