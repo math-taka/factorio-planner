@@ -24,7 +24,7 @@ public class RecipeCalculatorTest {
 
     @BeforeEach
     void setUp() throws IOException{
-        book = RecipeLoader.load(new File("src/test/resources/recipeCalculatorTest.json"));
+        book = RecipeLoader.loadBook(new File("src/test/resources/recipeCalculatorTest.json"));
         calculator = new RecipeCalculator();
         defaultSetting = new ProductionSetting(
             0,0,0,

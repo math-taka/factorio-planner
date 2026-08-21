@@ -3,6 +3,7 @@ package factorio.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import factorio.calculator.RecipeCalculator;
 import factorio.model.ItemStack;
 import factorio.translation.ItemNameTranslator;
 import factorio.translation.JapaneseItemNameTranslator;
@@ -103,6 +104,7 @@ public class FactorioPlannerApp extends Application{
             event ->{
                 System.out.println("---test start---");
                 List<ItemStack> targets = createProductionTargets();
+                
                 for(ItemStack itemStack:targets){
                     System.out.println(itemStack);
                 }

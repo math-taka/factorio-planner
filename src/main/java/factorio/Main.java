@@ -18,25 +18,17 @@ import factorio.io.RecipeLoader;
 public class Main{
     public static void main(String[] args){
 
-        String[] recipeNames ={
+        List<String> recipeNames =List.of(
             "iron_plate", "copper_plate", "steel_plate", "copper_cable", "gear_wheel", "electronic_circuit",
             "automation_science_pack", "transport_belt", "inserter", "logistic_science_pack"
-        };
-
-        String pathHead = "src/main/resources/recipes/", jsonIdentifier=".json";
-        
-        ArrayList<Recipe> recipes = new ArrayList<>();
-
-        for(String recipeName:recipeNames){
-            File recipeFile = new File(pathHead+recipeName+jsonIdentifier);
-            try{
-                recipes.add(RecipeLoader.loadRecipe(recipeFile));
-            }catch(IOException e){
-                System.err.println(e);
-            }
+        );
+        File directory = new File("src/main/resources/recipes");
+        RecipeBook book = null;
+        try {
+            book = RecipeLoader.load(directory, recipeNames);
+        } catch (Exception e) {
+            System.err.println(e);
         }
-
-        RecipeBook book = new RecipeBook(recipes);
 
         List<ItemStack> needs = List.of(
             new ItemStack("automation_science_pack",1),

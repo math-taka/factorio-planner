@@ -20,7 +20,7 @@ public class RecipeLoaderTest{
     @Test
     void loadRecipeBookFromJSON() throws Exception{
         File bookFile = new File("src/test/resources/recipelist.json");
-        RecipeBook recipeBook = RecipeLoader.load(bookFile);
+        RecipeBook recipeBook = RecipeLoader.loadBook(bookFile);
         
         Recipe recipe0=new Recipe(
             List.of(new ItemStack("iron_ore",1)),
@@ -48,7 +48,7 @@ public class RecipeLoaderTest{
         File file = new File("src/test/resources/dammy.json");
 
         assertThrows(IOException.class,()->{
-            RecipeLoader.load(file);
+            RecipeLoader.loadBook(file);
         });
     }
 
