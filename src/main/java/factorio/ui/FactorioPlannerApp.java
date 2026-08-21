@@ -103,6 +103,10 @@ public class FactorioPlannerApp extends Application{
         calculateButton.setOnAction(
             event ->{
                 System.out.println("Calculate!!");
+                List<ItemStack> targets=createProductionTargets();
+                for(ItemStack itemStack:targets){
+                    System.out.println(itemStack);
+                }
             }
         );
 
