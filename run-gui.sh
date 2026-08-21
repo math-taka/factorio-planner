@@ -32,14 +32,14 @@ sleep 1
 echo "Starting noVNC..."
 /usr/share/novnc/utils/novnc_proxy \
     --vnc localhost:5900 \
-    --listen 6080 &
+    --listen 6081 &
 NOVNC_PID=$!
 
 sleep 2
 
 echo
 echo "GUI environment started."
-echo "Open port 6080 in the Codespaces Ports panel."
+echo "Open port 6081 in the Codespaces Ports panel."
 echo
 
 DISPLAY="$DISPLAY_NUM" mvn javafx:run

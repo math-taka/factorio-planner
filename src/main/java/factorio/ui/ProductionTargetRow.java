@@ -1,5 +1,6 @@
 package factorio.ui;
 
+import factorio.model.ItemStack;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -37,5 +38,12 @@ public class ProductionTargetRow extends HBox {
             amountField,
             unitLabel
         );
+    }
+
+    public ItemStack toItemStack(double timeCoversionRate){
+        String item = itemComboBox.getValue();
+        double amount = Double.parseDouble(amountField.getText())*timeCoversionRate;
+    
+        return new ItemStack(item,amount);
     }
 }

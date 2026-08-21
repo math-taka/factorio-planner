@@ -1,7 +1,12 @@
 package factorio.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import factorio.model.ItemStack;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -80,10 +85,25 @@ public class FactorioPlannerApp extends Application{
             event -> addTargetRow()
         );
 
+        Button testButton = new Button("テスト");
+        testButton.setOnAction(
+            event ->{
+                System.out.println("---test start---");
+                System.out.println(((ProductionTargetRow)targetRows.getChildren().get(0)).toItemStack(1));
+                
+                List<ItemStack> targets = createProductionTargets();
+                for(ItemStack itemStack:targets){
+                    System.out.println(itemStack);
+                }
+                System.out.println("---test end---");
+            }
+        );
+
         productionTargetPane.getChildren().addAll(
             targetHeader,
             targetRows,
-            addTargetButton
+            addTargetButton,
+            testButton
         );
 
         return productionTargetPane;
@@ -96,5 +116,16 @@ public class FactorioPlannerApp extends Application{
         );
 
         return productionSettingPane;
+    }
+
+    private List<ItemStack> createProductionTargets(){
+        ArrayList<ItemStack> targets =new ArrayList<>();
+        double timeConversionRate = timeUnitComboBox.getValue().equals("/sec")?1:1.0/60;
+
+        for(Node node:targetRows.getChildren()){
+            ProductionTargetRow row = (ProductionTargetRow)node;
+            targets.add(row.toItemStack(timeConversionRate));
+        }
+        return targets;
     }
 }
