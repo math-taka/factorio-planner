@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import factorio.model.ItemStack;
+import factorio.translation.ItemNameTranslator;
+import factorio.translation.JapaneseItemNameTranslator;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -11,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 public class FactorioPlannerApp extends Application{
     private VBox targetRows;
     private ComboBox<String> timeUnitComboBox;
+    private ItemNameTranslator translator=new JapaneseItemNameTranslator();
 
     @Override
     public void start(Stage stage){
@@ -100,8 +102,6 @@ public class FactorioPlannerApp extends Application{
         testButton.setOnAction(
             event ->{
                 System.out.println("---test start---");
-                System.out.println(((ProductionTargetRow)targetRows.getChildren().get(0)).toItemStack(1));
-                
                 List<ItemStack> targets = createProductionTargets();
                 for(ItemStack itemStack:targets){
                     System.out.println(itemStack);
@@ -136,7 +136,7 @@ public class FactorioPlannerApp extends Application{
 
         for(Node node:targetRows.getChildren()){
             ProductionTargetRow row = (ProductionTargetRow)node;
-            targets.add(row.toItemStack(timeConversionRate));
+            targets.add(row.toItemStack(timeConversionRate, translator));
         }
         return targets;
     }
