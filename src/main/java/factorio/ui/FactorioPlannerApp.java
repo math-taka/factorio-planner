@@ -85,6 +85,17 @@ public class FactorioPlannerApp extends Application{
             event -> addTargetRow()
         );
 
+        Button calculateButton = new Button("計算");
+        calculateButton.setOnAction(
+            event ->{
+                System.out.println("Calculate!!");
+                List<ItemStack> targets=createProductionTargets();
+                for(ItemStack itemStack:targets){
+                    System.out.println(itemStack);
+                }
+            }
+        );
+
         Button testButton = new Button("テスト");
         testButton.setOnAction(
             event ->{
@@ -96,17 +107,6 @@ public class FactorioPlannerApp extends Application{
                     System.out.println(itemStack);
                 }
                 System.out.println("---test end---");
-            }
-        );
-
-        Button calculateButton = new Button("計算");
-        calculateButton.setOnAction(
-            event ->{
-                System.out.println("Calculate!!");
-                List<ItemStack> targets=createProductionTargets();
-                for(ItemStack itemStack:targets){
-                    System.out.println(itemStack);
-                }
             }
         );
 
