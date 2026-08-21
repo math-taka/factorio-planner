@@ -99,10 +99,18 @@ public class FactorioPlannerApp extends Application{
             }
         );
 
+        Button calculateButton = new Button("計算");
+        calculateButton.setOnAction(
+            event ->{
+                System.out.println("Calculate!!");
+            }
+        );
+
         productionTargetPane.getChildren().addAll(
             targetHeader,
             targetRows,
             addTargetButton,
+            calculateButton,
             testButton
         );
 
