@@ -1,10 +1,14 @@
 package factorio.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import factorio.calculator.RecipeCalculator;
+import factorio.io.RecipeLoader;
 import factorio.model.ItemStack;
+import factorio.model.RecipeBook;
 import factorio.translation.ItemNameTranslator;
 import factorio.translation.JapaneseItemNameTranslator;
 import javafx.application.Application;
@@ -24,8 +28,19 @@ public class FactorioPlannerApp extends Application{
     private ComboBox<String> timeUnitComboBox;
     private ItemNameTranslator translator=new JapaneseItemNameTranslator();
 
+    private RecipeBook recipeBook;
+    private RecipeCalculator calculator;
+
     @Override
     public void start(Stage stage){
+        File recipeDirectory = new File("src/main/resources/recipes");
+        try{
+            recipeBook=RecipeLoader.load(recipeDirectory);
+        }catch(IOException e){
+            System.err.println(e);
+        }
+        calculator = new RecipeCalculator();
+
         VBox productionTargetPane = createProductionTargetPane();
 
         VBox productionSettingPane = createProductionSettingPane();
@@ -93,7 +108,8 @@ public class FactorioPlannerApp extends Application{
             event ->{
                 System.out.println("Calculate!!");
                 List<ItemStack> targets=createProductionTargets();
-                for(ItemStack itemStack:targets){
+                List<ItemStack> ingredients = calculator.calculateIngredients(targets, recipeBook);
+                for(ItemStack itemStack:ingredients){
                     System.out.println(itemStack);
                 }
             }
