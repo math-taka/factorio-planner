@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -141,8 +142,26 @@ public class FactorioPlannerApp extends Application{
 
     private VBox createProductionSettingPane(){
         VBox productionSettingPane = new VBox();
-        productionSettingPane.getChildren().add(
-            new Label("生産設定")
+        productionSettingPane.setSpacing(10);
+
+        Label productionSettingLabel = new Label("生産設定");
+        productionSettingLabel.setStyle("-fx-font-size:18px");
+
+        ProductionFacilitySettingRow furnaceSetting = new ProductionFacilitySettingRow(
+            "炉",List.of("石の炉","鋼鉄の炉","電気炉")
+        );
+        ProductionFacilitySettingRow assemblerSetting = new ProductionFacilitySettingRow(
+            "組立機", List.of("組立機1","組立機2","組立機3")
+        );
+        ProductionFacilitySettingRow chemicalPlantSetting = new ProductionFacilitySettingRow(
+            "化学プラント",List.of("化学プラント")
+        );
+
+        productionSettingPane.getChildren().addAll(
+            productionSettingLabel,
+            furnaceSetting,
+            assemblerSetting,
+            chemicalPlantSetting
         );
 
         return productionSettingPane;
